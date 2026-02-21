@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#080c10"/>
+<title>VCP Scanner · NSE Swing Setups</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+
+<style>
+/* ── TOKENS ──────────────────────────────────────── */
+:root{
+  --bg:#080c10;
+  --s1:#0f1520;
+  --s2:#162030;
+  --border:#1e2d42;
+  --g:#10f590;    /* green  */
+  --r:#ff3d5a;    /* red    */
+  --am:#f5a623;   /* amber  */
+  --bl:#29c6f6;   /* blue   */
+  --pu:#b06dff;   /* purple */
+  --tx:#d4e0f0;
+  --mu:#4a6080;
+  --mono:'DM Mono',monospace;
+  --head:'Syne',sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font-family:var(--mono);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── GRID NOISE TEXTURE ──────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 39px,var(--border) 40px),
+    repeating-linear-gradient(90deg,transparent,transparent 39px,var(--border) 40px);
+  opacity:.18;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── HEADER ──────────────────────────────────────── */
+header{
+  position:relative;z-index:10;
+  padding:20px 20px 0;
+  max-width:1200px;margin:0 auto;
+}
+.header-inner{
+  display:flex;flex-wrap:wrap;
+  align-items:flex-start;justify-content:space-between;
+  gap:12px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  font-family:var(--head);
+  font-size:clamp(1.3rem,4vw,1.9rem);
+  font-weight:800;
+  letter-spacing:-1px;
+  line-height:1;
+}
+.logo span{color:var(--g);}
+.sub{
+  font-size:.7rem;
+  color:var(--mu);
+  margin-top:5px;
+  letter-spacing:.05em;
+}
+.meta-right{text-align:right;}
+.live-dot{
+  display:inline-block;
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--g);
+  margin-right:5px;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,245,144,.5)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(16,245,144,0)}}
+.scan-time{font-size:.68rem;color:var(--mu);}
+.scan-date{font-size:.82rem;color:var(--g);font-weight:500;}
+
+/* ── SUMMARY BAR ─────────────────────────────────── */
+.summary-bar{
+  display:flex;flex-wrap:wrap;gap:8px;
+  padding:14px 20px;
+  max-width:1200px;margin:0 auto;
+  position:relative;z-index:10;
+}
+.stat-pill{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px 14px;
+  font-size:.72rem;
+}
+.stat-pill .v{
+  display:block;
+  font-size:1.05rem;
+  font-weight:500;
+  color:var(--bl);
+  margin-bottom:1px;
+}
+.stat-pill .l{color:var(--mu);font-size:.64rem;letter-spacing:.06em;}
+
+/* ── MAIN GRID ───────────────────────────────────── */
+main{
+  max-width:1200px;
+  margin:0 auto;
+  padding:12px 20px 40px;
+  position:relative;z-index:10;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:14px;
+}
+
+/* ── CARD ────────────────────────────────────────── */
+.card{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+  cursor:default;
+}
+.card:hover{
+  border-color:rgba(16,245,144,.35);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+}
+
+/* Rank badge */
+.card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 10px;
+  border-bottom:1px solid var(--border);
+}
+.rank{
+  font-family:var(--head);
+  font-size:.65rem;
+  color:var(--mu);
+  font-weight:700;
+  letter-spacing:.1em;
+}
+.symbol{
+  font-family:var(--head);
+  font-size:1.2rem;
+  font-weight:800;
+  letter-spacing:-.5px;
+  color:#fff;
+}
+.score-badge{
+  font-size:.7rem;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:20px;
+  font-family:var(--head);
+}
+.score-hi {background:rgba(16,245,144,.12);color:var(--g);border:1px solid rgba(16,245,144,.3);}
+.score-md {background:rgba(245,166,35,.12);color:var(--am);border:1px solid rgba(245,166,35,.3);}
+.score-lo {background:rgba(41,198,246,.12);color:var(--bl);border:1px solid rgba(41,198,246,.3);}
+
+/* Chart */
+.chart-wrap{
+  background:var(--s2);
+  padding:4px 8px;
+  position:relative;
+}
+canvas.mini-chart{display:block;width:100%;}
+
+.chart-overlay{
+  position:absolute;top:6px;left:12px;
+  font-size:.62rem;
+  color:var(--mu);
+}
+.chart-overlay strong{color:var(--tx);font-weight:500;}
+
+/* Price row */
+.price-row{
+  display:flex;align-items:baseline;gap:8px;
+  padding:10px 16px 0;
+}
+.price-now{
+  font-size:1.5rem;
+  font-weight:500;
+  color:#fff;
+  font-family:var(--head);
+}
+.pivot-tag{
+  font-size:.65rem;
+  background:rgba(176,109,255,.12);
+  color:var(--pu);
+  border:1px solid rgba(176,109,255,.25);
+  padding:2px 8px;
+  border-radius:20px;
+}
+.dist-tag{
+  margin-left:auto;
+  font-size:.68rem;
+  color:var(--am);
+}
+
+/* Setup table */
+.setup{padding:10px 16px 14px;}
+.setup-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;
+  border-bottom:1px solid rgba(30,45,66,.8);
+  font-size:.74rem;
+}
+.setup-row:last-child{border-bottom:none;}
+.setup-row .sl{color:var(--mu);font-size:.65rem;}
+.g-val{color:var(--g);}
+.r-val{color:var(--r);}
+.am-val{color:var(--am);}
+.bl-val{color:var(--bl);}
+
+/* Indicator row */
+.indicators{
+  display:flex;flex-wrap:wrap;gap:5px;
+  padding:0 16px 14px;
+}
+.ind{
+  font-size:.62rem;
+  padding:3px 8px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  color:var(--mu);
+}
+.ind.on{ color:#fff; background:rgba(16,245,144,.08); border-color:rgba(16,245,144,.2);}
+.ind.warn{color:var(--am);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.2);}
+
+/* ── RS BAR ──────────────────────────────────────── */
+.rs-bar-wrap{
+  padding:0 16px 14px;
+  display:flex;align-items:center;gap:8px;
+}
+.rs-label{font-size:.62rem;color:var(--mu);white-space:nowrap;}
+.rs-track{
+  flex:1;height:4px;
+  background:var(--border);
+  border-radius:4px;
+  overflow:hidden;
+}
+.rs-fill{
+  height:100%;
+  border-radius:4px;
+  transition:width .5s ease;
+}
+.rs-val{font-size:.72rem;font-weight:500;}
+
+/* ── EMPTY STATE ─────────────────────────────────── */
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:80px 20px;
+  color:var(--mu);
+}
+.empty h2{font-family:var(--head);font-size:1.4rem;margin-bottom:8px;color:var(--tx);}
+.empty code{
+  display:inline-block;
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:4px 12px;
+  font-size:.78rem;
+  margin-top:10px;
+  color:var(--g);
+}
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer{
+  text-align:center;
+  padding:16px;
+  font-size:.65rem;
+  color:var(--mu);
+  border-top:1px solid var(--border);
+  position:relative;z-index:10;
+}
+
+/* ── LOADING ─────────────────────────────────────── */
+#loading{
+  position:fixed;inset:0;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:100;
+  gap:12px;
+  transition:opacity .4s;
+}
+#loading.hidden{opacity:0;pointer-events:none;}
+.spinner{
+  width:36px;height:36px;
+  border:2px solid var(--border);
+  border-top-color:var(--g);
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading p{font-size:.75rem;color:var(--mu);}
+
+/* ── ERROR BANNER ────────────────────────────────── */
+#error-banner{
+  display:none;
+  background:#1a0a0e;
+  border:1px solid var(--r);
+  color:var(--r);
+  font-size:.78rem;
+  padding:12px 20px;
+  text-align:center;
+  position:relative;z-index:10;
+}
+
+/* ── REFRESH BTN ─────────────────────────────────── */
+.refresh-btn{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--mu);
+  padding:5px 12px;
+  border-radius:6px;
+  font-family:var(--mono);
+  font-size:.65rem;
+  cursor:pointer;
+  transition:all .2s;
+}
+.refresh-btn:hover{border-color:var(--g);color:var(--g);}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media(max-width:400px){
+  main{grid-template-columns:1fr;}
+  .price-now{font-size:1.3rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <p>Loading latest scan…</p>
+</div>
+
+<div id="error-banner">⚠ Could not load scan data. Run the scanner first via GitHub Actions → workflow_dispatch.</div>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="logo">VCP<span>.</span>Scanner</div>
+      <div class="sub">NSE · SWING SETUPS · DAILY AUTO-SCAN</div>
+    </div>
+    <div class="meta-right">
+      <div class="scan-date" id="scan-date">—</div>
+      <div class="scan-time"><span class="live-dot"></span>Updated <span id="scan-time">—</span></div>
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+    </div>
+  </div>
+</header>
+
+<div class="summary-bar" id="summary-bar"></div>
+
+<main id="cards"></main>
+
+<footer>
+  VCP Scanner · NSE Swing Trade · Auto-runs 6:30 AM IST weekdays · Not financial advice
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────
+//  MINI CANDLESTICK CHART
+// ─────────────────────────────────────────────────
+function drawChart(canvas, candles, pivot) {
+  const dpr  = window.devicePixelRatio || 1;
+  const W    = canvas.parentElement.clientWidth;
+  const H    = 110;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  if (!candles || candles.length === 0) return;
+
+  const PAD = { t:12, b:24, l:4, r:4 };
+  const cW  = W - PAD.l - PAD.r;
+  const cH  = H - PAD.t - PAD.b;
+
+  const allH = candles.map(c => c[1]);
+  const allL = candles.map(c => c[2]);
+  const hi   = Math.max(...allH);
+  const lo   = Math.min(...allL);
+  const rng  = hi - lo || 1;
+  const pad  = rng * 0.08;
+  const pMin = lo  - pad;
+  const pMax = hi  + pad;
+
+  function ys(price) {
+    return PAD.t + cH - ((price - pMin) / (pMax - pMin)) * cH;
+  }
+  function xs(i) {
+    return PAD.l + (i / (candles.length - 1)) * cW;
+  }
+
+  const bw = Math.max(2, Math.floor(cW / candles.length) - 1);
+
+  // Volume bars (background, subtle)
+  const maxVol = Math.max(...candles.map(c => c[4]));
+  const volH   = cH * 0.22;
+  candles.forEach((c, i) => {
+    const x   = xs(i);
+    const vH  = (c[4] / maxVol) * volH;
+    const bull = c[3] >= c[0];
+    ctx.fillStyle = bull
+      ? 'rgba(16,245,144,0.18)'
+      : 'rgba(255,61,90,0.18)';
+    ctx.fillRect(x - bw/2, PAD.t + cH - vH, bw, vH);
+  });
+
+  // Pivot dashed line
+  if (pivot) {
+    const py = ys(pivot);
+    if (py > PAD.t && py < PAD.t + cH) {
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = 'rgba(176,109,255,0.55)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(PAD.l, py);
+      ctx.lineTo(PAD.l + cW, py);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = 'rgba(176,109,255,0.7)';
+      ctx.font = `9px DM Mono`;
+      ctx.fillText('Pivot', PAD.l + cW - 26, py - 3);
+    }
+  }
+
+  // Candles
+  candles.forEach((c, i) => {
+    const x    = xs(i);
+    const bull = c[3] >= c[0];
+    const col  = bull ? '#10f590' : '#ff3d5a';
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1;
+
+    // Wick
+    ctx.beginPath();
+    ctx.moveTo(x, ys(c[1]));
+    ctx.lineTo(x, ys(c[2]));
+    ctx.stroke();
+
+    // Body
+    const bTop = ys(Math.max(c[0], c[3]));
+    const bBot = ys(Math.min(c[0], c[3]));
+    const bH   = Math.max(1, bBot - bTop);
+    ctx.fillStyle = bull ? 'rgba(16,245,144,0.75)' : 'rgba(255,61,90,0.75)';
+    ctx.fillRect(x - bw/2, bTop, bw, bH);
+  });
+
+  // X labels: first + last
+  ctx.fillStyle = '#3a5070';
+  ctx.font = '9px DM Mono';
+  ctx.fillText('45d ago', PAD.l, H - 7);
+  ctx.fillText('Today', PAD.l + cW - 32, H - 7);
+}
+
+// ─────────────────────────────────────────────────
+//  BUILD CARD
+// ─────────────────────────────────────────────────
+function scoreClass(s) {
+  if (s >= 75) return 'score-hi';
+  if (s >= 60) return 'score-md';
+  return 'score-lo';
+}
+
+function rsColor(rs) {
+  if (rs === null || rs === undefined) return { c: '#4a6080', pct: 50 };
+  if (rs >= 5)  return { c: '#10f590', pct: Math.min(100, 50 + rs * 2) };
+  if (rs >= 0)  return { c: '#f5a623', pct: 50 };
+  return { c: '#ff3d5a', pct: Math.max(0, 50 + rs * 2) };
+}
+
+function rrLabel(rr) {
+  if (!rr) return '—';
+  return `${rr.toFixed(1)}:1`;
+}
+
+function buildCard(stock, rank) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.animationDelay = `${rank * 60}ms`;
+
+  const rs     = stock.rs_vs_nifty;
+  const rsInfo = rsColor(rs);
+  const rsStr  = rs !== null && rs !== undefined ? `${rs >= 0 ? '+' : ''}${rs.toFixed(1)}%` : 'N/A';
+  const volStr = stock.vol_ratio !== undefined
+                 ? (stock.vol_ratio * 100).toFixed(0) + '% of avg'
+                 : '—';
+
+  card.innerHTML = `
+    <div class="card-header">
+      <div>
+        <div class="rank">#${rank} VCP SETUP</div>
+        <div class="symbol">${stock.symbol}</div>
+      </div>
+      <div class="score-badge ${scoreClass(stock.vcp_score)}">
+        ${stock.vcp_score} / 100
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas class="mini-chart" data-pivot="${stock.pivot}"></canvas>
+      <div class="chart-overlay">45-Day Base · <strong>Pivot ₹${stock.pivot}</strong></div>
+    </div>
+
+    <div class="price-row">
+      <div class="price-now">₹${stock.price.toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+      <div class="pivot-tag">Pivot ₹${stock.pivot}</div>
+      <div class="dist-tag">${stock.dist_pct.toFixed(1)}% to breakout</div>
+    </div>
+
+    <div class="setup">
+      <div class="setup-row">
+        <span class="sl">ENTRY (above pivot)</span>
+        <span class="g-val">₹${(stock.pivot * 1.005).toFixed(2)}</span>
+      </div>
+      <div class="setup-row">
+        <span class="sl">STOP LOSS</span>
+        <span class="r-val">₹${stock.stop_loss}</span>
+      </div>
+      <div class="setup-row">
+        <span class="sl">TARGET 1 · +8%</span>
+        <span class="am-val">₹${stock.target1.toLocaleString('en-IN')}</span>
+      </div>
+      <div class="setup-row">
+        <span class="sl">TARGET 2 · +15%</span>
+        <span class="g-val">₹${stock.target2.toLocaleString('en-IN')}</span>
+      </div>
+      <div class="setup-row">
+        <span class="sl">RISK:REWARD</span>
+        <span class="bl-val">${rrLabel(stock.risk_reward)}</span>
+      </div>
+    </div>
+
+    <div class="indicators">
+      <span class="ind on">📊 Stage 2</span>
+      <span class="ind ${stock.resistance_touches >= 3 ? 'on' : 'warn'}">
+        🔺 ${stock.resistance_touches} Touches
+      </span>
+      <span class="ind ${stock.rising_lows >= 2 ? 'on' : 'warn'}">
+        📈 ${stock.rising_lows} Rising Lows
+      </span>
+      <span class="ind on">🔇 Vol ${volStr}</span>
+      <span class="ind ${stock.contraction < 0.8 ? 'on' : 'warn'}">
+        📉 ATR ${(stock.contraction * 100).toFixed(0)}%
+      </span>
+    </div>
+
+    <div class="rs-bar-wrap">
+      <span class="rs-label">RS vs NIFTY</span>
+      <div class="rs-track">
+        <div class="rs-fill" style="width:${rsInfo.pct}%;background:${rsInfo.c}"></div>
+      </div>
+      <span class="rs-val" style="color:${rsInfo.c}">${rsStr}</span>
+    </div>
+  `;
+
+  return card;
+}
+
+// ─────────────────────────────────────────────────
+//  LOAD DATA
+// ─────────────────────────────────────────────────
+async function loadData() {
+  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('error-banner').style.display = 'none';
+
+  try {
+    const cacheBust = Date.now();
+    const res = await fetch(`data/results.json?t=${cacheBust}`);
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+
+    // Header meta
+    const dt = new Date(data.generated_at);
+    document.getElementById('scan-date').textContent =
+      dt.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+    document.getElementById('scan-time').textContent =
+      dt.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', timeZoneName:'short' });
+
+    // Summary bar
+    const bar = document.getElementById('summary-bar');
+    bar.innerHTML = `
+      <div class="stat-pill"><span class="v">${data.total_scanned}</span><span class="l">STOCKS SCANNED</span></div>
+      <div class="stat-pill"><span class="v" style="color:var(--g)">${data.total_found}</span><span class="l">VCP SETUPS FOUND</span></div>
+      <div class="stat-pill"><span class="v" style="color:var(--am)">${data.stocks.length}</span><span class="l">TOP SHOWN</span></div>
+      <div class="stat-pill"><span class="v" style="color:var(--bl)">NSE</span><span class="l">EXCHANGE</span></div>
+    `;
+
+    // Cards
+    const container = document.getElementById('cards');
+    container.innerHTML = '';
+
+    if (!data.stocks || data.stocks.length === 0) {
+      container.innerHTML = `
+        <div class="empty">
+          <h2>No setups found today</h2>
+          <p>Market may be trending hard or scanner found no VCP patterns.</p>
+          <p>Try again tomorrow or trigger manually:</p>
+          <code>GitHub Actions → Run workflow</code>
+        </div>`;
+    } else {
+      data.stocks.forEach((stock, i) => {
+        const card = buildCard(stock, i + 1);
+        container.appendChild(card);
+      });
+
+      // Draw charts after DOM settles
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.card').forEach((card, i) => {
+          const canvas = card.querySelector('canvas.mini-chart');
+          const stock  = data.stocks[i];
+          if (canvas && stock && stock.candles) {
+            drawChart(canvas, stock.candles, stock.pivot);
+          }
+        });
+      });
+    }
+
+  } catch (e) {
+    document.getElementById('error-banner').style.display = 'block';
+    console.error(e);
+  } finally {
+    document.getElementById('loading').classList.add('hidden');
+  }
+}
+
+// Redraw charts on resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    // Trigger a quiet reload of charts only
+    loadData();
+  }, 300);
+});
+
+// Boot
+loadData();
+</script>
+</body>
+</html>

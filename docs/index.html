@@ -7,616 +7,222 @@
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Lato', sans-serif; background: #f0f2f5; color: #111; font-size: 16px; }
 
-body {
-  font-family: 'Lato', sans-serif;
-  background: #f4f6f8;
-  color: #1a1a1a;
-  font-size: 16px;
-}
-
-/* ── TOP BAR ── */
-.topbar {
-  background: #1a56db;
-  color: white;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.topbar-title { font-size: 1.4rem; font-weight: 900; }
-.topbar-title span { color: #93c5fd; }
-.topbar-sub { font-size: 0.8rem; color: #bfdbfe; margin-top: 3px; }
-.topbar-meta { text-align: right; font-size: 0.85rem; color: #bfdbfe; line-height: 1.7; }
-.topbar-meta strong { color: #fff; font-size: 1rem; }
-
-/* ── MARKET STATUS BANNER ── */
-.market-banner {
-  padding: 10px 20px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-align: center;
-  display: none;
-}
-.market-banner.up   { background: #f0fdf4; color: #15803d; border-bottom: 2px solid #86efac; }
-.market-banner.down { background: #fef2f2; color: #b91c1c; border-bottom: 2px solid #fca5a5; }
-
-/* ── INFO STRIP ── */
-.info-strip {
-  background: #fff;
-  border-bottom: 2px solid #e5e7eb;
-  padding: 12px 20px;
-  display: flex;
-  flex-wrap: wrap;
-}
-.info-box {
-  flex: 1; min-width: 120px;
-  padding: 8px 16px;
-  border-right: 1px solid #e5e7eb;
-  text-align: center;
-}
-.info-box:last-child { border-right: none; }
-.info-box .num { font-size: 1.7rem; font-weight: 900; color: #1a56db; line-height: 1; }
-.info-box .lbl { font-size: 0.72rem; color: #6b7280; margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
-
-/* ── HOW TO BOX ── */
-.howto {
-  background: #eff6ff;
-  border: 1.5px solid #bfdbfe;
-  border-radius: 10px;
-  margin: 16px 20px 4px;
-  padding: 14px 18px;
-  font-size: 0.92rem;
-  color: #1e40af;
-  line-height: 1.7;
-}
-.howto strong { color: #1a56db; }
-
-/* ── ACCURACY NOTE ── */
-.accuracy-note {
-  background: #fff7ed;
-  border: 1.5px solid #fed7aa;
-  border-radius: 10px;
-  margin: 10px 20px 16px;
-  padding: 12px 18px;
-  font-size: 0.86rem;
-  color: #92400e;
-  line-height: 1.6;
-}
-.accuracy-note strong { color: #c2410c; }
-
-/* ── SECTION TITLE ── */
-.section-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #374151;
-  padding: 4px 20px 12px;
-  display: none;
-  align-items: center;
-  gap: 8px;
-}
-.section-title::before {
-  content: '';
-  display: block;
-  width: 4px; height: 20px;
-  background: #1a56db;
-  border-radius: 4px;
-}
-
-/* ── CARDS ── */
-.cards { padding: 0 16px 40px; display: flex; flex-direction: column; gap: 16px; }
-
-.card {
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-/* ── CARD HEADER ── */
-.card-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 18px 12px;
-  border-bottom: 1.5px solid #f3f4f6;
-  flex-wrap: wrap; gap: 10px;
-}
-.sym-row { display: flex; align-items: center; gap: 12px; }
-.rank-circle {
-  width: 38px; height: 38px; border-radius: 50%;
+.header {
   background: #1a56db; color: white;
-  font-size: 1.05rem; font-weight: 900;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  padding: 14px 20px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
 }
-.sym { font-size: 1.35rem; font-weight: 900; color: #111827; }
-.nse-tag {
-  font-size: 0.65rem; background: #f3f4f6; color: #6b7280;
-  padding: 2px 7px; border-radius: 20px; margin-left: 4px; font-weight: 700;
-}
-.score-box {
-  text-align: center; padding: 7px 16px; border-radius: 10px;
-  border: 1.5px solid; min-width: 90px;
-}
-.score-num { font-size: 1.5rem; font-weight: 900; line-height: 1; }
-.score-lbl { font-size: 0.62rem; text-transform: uppercase; letter-spacing: .06em; margin-top: 1px; }
-
-/* ── BREAKOUT URGENCY BAR ── */
-.urgency-bar {
-  background: #f9fafb;
-  border-bottom: 1.5px solid #f3f4f6;
-  padding: 10px 18px;
-  display: flex; align-items: center; gap: 10px;
-}
-.urgency-label { font-size: 0.78rem; font-weight: 700; color: #374151; white-space: nowrap; }
-.urgency-track {
-  flex: 1; height: 10px;
-  background: #e5e7eb; border-radius: 10px; overflow: hidden;
-}
-.urgency-fill {
-  height: 100%; border-radius: 10px;
-  background: linear-gradient(90deg, #f59e0b, #16a34a);
-  transition: width .5s ease;
-}
-.urgency-pct { font-size: 0.82rem; font-weight: 700; color: #15803d; white-space: nowrap; }
-
-/* ── CHART ── */
-.chart-section {
-  background: #fafafa;
-  border-bottom: 1.5px solid #f3f4f6;
-  padding: 6px 10px 2px;
-}
-.chart-label { font-size: 0.72rem; color: #9ca3af; margin-bottom: 3px; text-align: center; }
-canvas.chart { display: block; width: 100%; }
-
-/* ── PRICE BAND ── */
-.price-band {
-  padding: 14px 18px;
-  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-  border-bottom: 1.5px solid #f3f4f6;
-}
-.price-lbl { font-size: 0.7rem; color: #9ca3af; text-transform: uppercase; letter-spacing:.05em; }
-.price-big { font-size: 1.85rem; font-weight: 900; color: #111827; line-height: 1.1; }
-.price-divider { width: 1px; height: 46px; background: #e5e7eb; flex-shrink: 0; }
-.pivot-num { font-size: 1.15rem; font-weight: 700; color: #7c3aed; }
-.dist-badge {
-  margin-left: auto;
-  background: #fef3c7; border: 1.5px solid #fcd34d;
-  color: #92400e; font-size: 0.8rem; font-weight: 700;
-  padding: 6px 12px; border-radius: 8px; white-space: nowrap;
+.header h1 { font-size: 1.3rem; font-weight: 900; }
+.header h1 span { color: #93c5fd; }
+.header p  { font-size: 0.75rem; color: #bfdbfe; margin-top: 2px; }
+.header-right { text-align: right; font-size: 0.8rem; color: #bfdbfe; line-height: 1.6; }
+.header-right strong { color: #fff; }
+.btn-refresh {
+  background: white; color: #1a56db; border: none; border-radius: 6px;
+  padding: 5px 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer;
+  font-family: 'Lato', sans-serif; margin-top: 4px;
 }
 
-/* ── TRADE TABLE ── */
-.trade-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
-.trade-table th {
-  background: #f9fafb; color: #6b7280;
-  text-align: left; font-size: 0.68rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .06em;
-  padding: 8px 18px; border-bottom: 1px solid #f3f4f6;
-}
-.trade-table td {
-  padding: 11px 18px;
-  border-bottom: 1px solid #f9fafb; vertical-align: middle;
-}
-.trade-table tr:last-child td { border-bottom: none; }
-.what { color: #374151; font-size: 0.86rem; }
-.how  { font-weight: 700; font-size: 1rem; }
-.note { font-size: 0.7rem; color: #9ca3af; display: block; margin-top: 2px; }
-.c-green { color: #15803d; }
-.c-red   { color: #dc2626; }
-.c-amber { color: #d97706; }
-.c-blue  { color: #1d4ed8; }
-.c-pur   { color: #7c3aed; }
+.mkt-strip { display:none; text-align:center; padding:9px 20px; font-size:0.85rem; font-weight:700; }
+.mkt-strip.up   { background:#f0fdf4; color:#15803d; border-bottom:2px solid #86efac; }
+.mkt-strip.down { background:#fef2f2; color:#b91c1c; border-bottom:2px solid #fca5a5; }
 
-/* ── 12 FILTERS SECTION ── */
-.filters-title {
-  padding: 10px 18px 6px;
-  font-size: 0.72rem; font-weight: 700; color: #6b7280;
-  text-transform: uppercase; letter-spacing: .08em;
-  border-top: 1.5px solid #f3f4f6;
-}
-.filters-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border-top: 1px solid #f3f4f6;
-}
-.filter-cell {
-  padding: 8px 18px;
-  display: flex; align-items: center; gap: 8px;
-  border-bottom: 1px solid #f9fafb;
-  border-right: 1px solid #f9fafb;
-  font-size: 0.78rem;
-}
-.filter-cell:nth-child(even) { border-right: none; }
-.filter-icon { font-size: 1rem; flex-shrink: 0; }
-.filter-name { color: #374151; flex: 1; }
-.filter-val  { font-weight: 700; font-size: 0.82rem; }
-.f-pass { color: #15803d; }
-.f-warn { color: #d97706; }
+.stats { background:#fff; border-bottom:2px solid #e5e7eb; display:flex; flex-wrap:wrap; }
+.stat  { flex:1; min-width:90px; padding:12px 16px; text-align:center; border-right:1px solid #e5e7eb; }
+.stat:last-child { border-right:none; }
+.stat .n { font-size:1.6rem; font-weight:900; color:#1a56db; line-height:1; }
+.stat .l { font-size:0.65rem; color:#9ca3af; margin-top:3px; text-transform:uppercase; letter-spacing:.05em; }
 
-/* ── EMPTY ── */
-.empty-box {
-  background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
-  padding: 60px 24px; text-align: center; margin: 0 16px;
-}
-.empty-box h2 { font-size: 1.3rem; color: #374151; margin-bottom: 8px; }
-.empty-box p { color: #6b7280; font-size: 0.9rem; line-height: 1.7; }
-.empty-box .good { color: #15803d; font-weight: 700; margin-top: 8px; font-size: 1rem; }
+.cards { padding:14px 14px 40px; display:flex; flex-direction:column; gap:14px; max-width:680px; margin:0 auto; }
 
-/* ── LOADING ── */
-#loading {
-  position: fixed; inset: 0; background: #f4f6f8;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  z-index: 100; transition: opacity .3s; gap: 14px;
-}
-#loading.hidden { opacity: 0; pointer-events: none; }
-.spin {
-  width: 44px; height: 44px;
-  border: 4px solid #dbeafe; border-top-color: #1a56db;
-  border-radius: 50%; animation: spin .8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-#loading p { font-size: 0.95rem; color: #6b7280; font-weight: 700; }
+.card { background:#fff; border-radius:14px; border:1.5px solid #e5e7eb; box-shadow:0 2px 6px rgba(0,0,0,0.05); overflow:hidden; }
 
-/* ── ERR ── */
-#err {
-  display: none;
-  background: #fef2f2; border: 1.5px solid #fca5a5; color: #b91c1c;
-  padding: 14px 20px; font-size: 0.88rem; font-weight: 700;
-  text-align: center; margin: 16px 20px; border-radius: 10px;
+.card-top {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px 12px; border-bottom:1.5px solid #f3f4f6; flex-wrap:wrap; gap:8px;
 }
-
-/* ── REFRESH ── */
-.refresh-btn {
-  background: white; border: 1.5px solid #bfdbfe; color: #1a56db;
-  padding: 6px 14px; border-radius: 8px; font-size: 0.8rem;
-  font-weight: 700; cursor: pointer; font-family: 'Lato', sans-serif;
-  margin-top: 6px;
+.sym-wrap { display:flex; align-items:center; gap:10px; }
+.rank-dot {
+  width:34px; height:34px; border-radius:50%; background:#1a56db; color:white;
+  font-size:1rem; font-weight:900; display:flex; align-items:center; justify-content:center;
 }
-.refresh-btn:hover { background: #eff6ff; }
+.sym-name { font-size:1.4rem; font-weight:900; }
+.sym-sub  { font-size:0.7rem; color:#9ca3af; margin-top:1px; }
+.badge { padding:6px 14px; border-radius:10px; font-size:0.78rem; font-weight:700; border:1.5px solid; text-align:center; }
 
-footer {
-  background: #fff; border-top: 1.5px solid #e5e7eb;
-  padding: 14px 20px; text-align: center;
-  font-size: 0.75rem; color: #9ca3af; line-height: 1.7;
-}
+.chart-wrap { background:#fafafa; border-bottom:1.5px solid #f3f4f6; padding:4px 8px 2px; }
+.chart-sub  { font-size:0.68rem; color:#9ca3af; text-align:center; margin-bottom:2px; }
+canvas { display:block; width:100%; }
 
-@media (max-width: 420px) {
-  .price-big { font-size: 1.5rem; }
-  .topbar-title { font-size: 1.2rem; }
-  .filters-grid { grid-template-columns: 1fr; }
-  .filter-cell:nth-child(even) { border-right: 1px solid #f9fafb; }
+.numbers { display:grid; grid-template-columns:1fr 1fr 1fr; border-bottom:1.5px solid #f3f4f6; }
+.num-cell { padding:12px 14px; text-align:center; border-right:1px solid #f3f4f6; }
+.num-cell:last-child { border-right:none; }
+.num-cell .lbl { font-size:0.65rem; color:#9ca3af; text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; }
+.num-cell .val { font-size:1.15rem; font-weight:900; }
+
+.actions { display:grid; grid-template-columns:1fr 1fr; }
+.action-cell { padding:14px 18px; border-right:1px solid #f3f4f6; border-top:1.5px solid #f3f4f6; }
+.action-cell:nth-child(even) { border-right:none; }
+.action-cell .a-lbl   { font-size:0.7rem; color:#9ca3af; text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px; }
+.action-cell .a-price { font-size:1.25rem; font-weight:900; }
+.action-cell .a-note  { font-size:0.7rem; color:#9ca3af; margin-top:2px; }
+
+.card-foot { background:#f9fafb; border-top:1.5px solid #f3f4f6; padding:9px 18px; display:flex; flex-wrap:wrap; gap:6px; }
+.tag { font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:20px; border:1px solid; }
+.tg  { background:#f0fdf4; color:#15803d; border-color:#86efac; }
+.ta  { background:#fffbeb; color:#92400e; border-color:#fcd34d; }
+.tb  { background:#eff6ff; color:#1d4ed8; border-color:#bfdbfe; }
+.tr  { background:#fef2f2; color:#b91c1c; border-color:#fca5a5; }
+
+.empty { background:#fff; border:1.5px solid #e5e7eb; border-radius:14px; padding:50px 20px; text-align:center; margin:14px auto 0; max-width:680px; }
+.empty h2 { font-size:1.2rem; color:#374151; margin-bottom:8px; }
+.empty p  { color:#9ca3af; font-size:0.9rem; line-height:1.7; }
+.empty .ok { color:#15803d; font-weight:700; margin-top:10px; }
+
+footer { text-align:center; padding:14px; font-size:0.7rem; color:#9ca3af; border-top:1px solid #e5e7eb; background:#fff; margin-top:8px; }
+
+#loading { position:fixed; inset:0; background:#f0f2f5; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:100; transition:opacity .3s; gap:12px; }
+#loading.hidden { opacity:0; pointer-events:none; }
+.spin { width:40px; height:40px; border:3px solid #dbeafe; border-top-color:#1a56db; border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+#loading p { font-size:0.9rem; color:#6b7280; font-weight:700; }
+
+.c-buy  { color:#1d4ed8; }
+.c-stop { color:#dc2626; }
+.c-t1   { color:#15803d; }
+.c-t2   { color:#047857; }
+.c-pur  { color:#7c3aed; }
+.c-now  { color:#111827; }
+
+@media(max-width:400px){
+  .numbers { grid-template-columns:1fr 1fr; }
+  .actions { grid-template-columns:1fr; }
+  .action-cell { border-right:none; }
 }
 </style>
 </head>
 <body>
 
-<div id="loading">
-  <div class="spin"></div>
-  <p>Loading today's setups…</p>
-</div>
+<div id="loading"><div class="spin"></div><p>Loading…</p></div>
 
-<div class="topbar">
+<div class="header">
   <div>
-    <div class="topbar-title">📈 VCP <span>Scanner</span> · NSE</div>
-    <div class="topbar-sub">High-Accuracy · 12-Filter · Min 2.5:1 Risk:Reward</div>
+    <h1>📈 VCP <span>Scanner</span> · NSE</h1>
+    <p>Pre-breakout setups · Auto-scan 6:30 AM IST weekdays</p>
   </div>
-  <div class="topbar-meta">
-    <div><strong id="scan-date">—</strong></div>
-    <div>Updated: <span id="scan-time">—</span></div>
-    <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+  <div class="header-right">
+    <strong id="scan-date">—</strong><br>
+    Updated <span id="scan-time">—</span><br>
+    <button class="btn-refresh" onclick="loadData()">↻ Refresh</button>
   </div>
 </div>
 
-<div class="market-banner" id="market-banner"></div>
-<div class="info-strip" id="info-strip"></div>
-<div id="err">⚠ Cannot load data. Run scanner from GitHub Actions → workflow_dispatch.</div>
-
-<div class="howto">
-  <strong>📌 How to trade these setups:</strong><br>
-  Each stock below has passed <strong>12 strict filters</strong> and is likely to break out within 1–2 days.
-  <strong style="color:#7c3aed">Buy above Entry price</strong> only when you see <strong>high volume</strong> (at least 1.5× normal).
-  Place <strong style="color:#dc2626">Stop Loss</strong> immediately after buying.
-  Book half profit at <strong style="color:#15803d">Target 1</strong>, let rest run to <strong style="color:#15803d">Target 2</strong>.
-</div>
-
-<div class="accuracy-note">
-  <strong>⚠ Important:</strong> Even with strict filters, not every trade will work.
-  Always risk only <strong>1–2% of your capital per trade</strong>.
-  Never buy without volume confirmation on breakout day.
-  If NIFTY is falling, skip all trades that day.
-</div>
-
-<div class="section-title" id="sec-title">Today's Pre-Breakout Setups</div>
+<div class="mkt-strip" id="mkt"></div>
+<div class="stats" id="stats"></div>
 <div class="cards" id="cards"></div>
 
-<footer>
-  VCP Scanner v2 · NSE · 12-Filter High-Accuracy Edition · Auto-runs 6:30 AM IST weekdays<br>
-  ⚠ Not financial advice. Past patterns do not guarantee future results. Trade responsibly.
-</footer>
+<footer>Not financial advice · Always use stop loss · Risk max 1–2% per trade</footer>
 
 <script>
-/* ── DRAW CHART ── */
 function drawChart(canvas, candles, pivot, entry) {
-  const dpr = window.devicePixelRatio || 1;
-  const W   = canvas.parentElement.clientWidth - 20;
-  const H   = 130;
-  canvas.width  = W * dpr; canvas.height = H * dpr;
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-  if (!candles || !candles.length) return;
-
-  const P = { t:12, b:22, l:4, r:4 };
-  const cW = W - P.l - P.r, cH = H - P.t - P.b;
-  const hi = Math.max(...candles.map(c=>c[1]));
-  const lo = Math.min(...candles.map(c=>c[2]));
-  const rng = (hi - lo) || 1;
-  const pad = rng * 0.12;
-  const pMax = hi + pad, pMin = lo - pad;
-  const ys = p => P.t + cH - ((p - pMin)/(pMax - pMin)) * cH;
-  const xs = i => P.l + (i/(candles.length-1)) * cW;
-  const bw = Math.max(2, Math.floor(cW/candles.length) - 1);
-
-  // bg
-  ctx.fillStyle = '#fafafa';
-  ctx.fillRect(0, 0, W, H);
-
-  // subtle grid lines
-  for (let i = 1; i < 4; i++) {
-    ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1;
-    const y = P.t + (cH / 4) * i;
-    ctx.beginPath(); ctx.moveTo(P.l, y); ctx.lineTo(P.l+cW, y); ctx.stroke();
-  }
-
-  // Volume bars
-  const maxV = Math.max(...candles.map(c=>c[4]));
-  const volH = cH * 0.22;
-  candles.forEach((c, i) => {
-    const x = xs(i), h = (c[4]/maxV) * volH;
-    ctx.fillStyle = c[3] >= c[0] ? 'rgba(22,163,74,.15)' : 'rgba(220,38,38,.15)';
-    ctx.fillRect(x - bw/2, P.t + cH - h, bw, h);
-  });
-
-  // Entry zone (green shaded band above pivot)
-  if (entry) {
-    const ey = ys(entry), py = ys(pivot);
-    if (ey > P.t && py < P.t + cH) {
-      ctx.fillStyle = 'rgba(22,163,74,0.08)';
-      ctx.fillRect(P.l, Math.min(ey, py), cW, Math.abs(py - ey) + 2);
-    }
-  }
-
-  // Pivot dashed line
-  if (pivot) {
-    const py = ys(pivot);
-    if (py > P.t && py < P.t+cH) {
-      ctx.setLineDash([4,4]); ctx.strokeStyle='#7c3aed'; ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.moveTo(P.l,py); ctx.lineTo(P.l+cW,py); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle='#7c3aed'; ctx.font='bold 9px Lato';
-      ctx.fillText('Buy Zone ▶', P.l+cW-58, py-3);
-    }
-  }
-
-  // Candles
-  candles.forEach((c, i) => {
-    const x = xs(i), bull = c[3] >= c[0];
-    ctx.strokeStyle = bull ? '#16a34a' : '#dc2626'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(x, ys(c[1])); ctx.lineTo(x, ys(c[2])); ctx.stroke();
-    const bT = ys(Math.max(c[0],c[3])), bB = ys(Math.min(c[0],c[3]));
-    ctx.fillStyle = bull ? 'rgba(22,163,74,.8)' : 'rgba(220,38,38,.8)';
-    ctx.fillRect(x-bw/2, bT, bw, Math.max(1, bB-bT));
-  });
-
-  // X labels
-  ctx.fillStyle='#9ca3af'; ctx.font='9px Lato';
-  ctx.fillText('50 days ago', P.l, H-5);
-  ctx.fillText('Today', P.l+cW-32, H-5);
+  const dpr=window.devicePixelRatio||1, W=canvas.parentElement.clientWidth-16, H=120;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  if(!candles?.length) return;
+  const P={t:10,b:20,l:4,r:4}, cW=W-P.l-P.r, cH=H-P.t-P.b;
+  const hi=Math.max(...candles.map(c=>c[1])), lo=Math.min(...candles.map(c=>c[2]));
+  const pad=(hi-lo)*0.12, pMax=hi+pad, pMin=lo-pad;
+  const ys=p=>P.t+cH-((p-pMin)/(pMax-pMin))*cH;
+  const xs=i=>P.l+(i/(candles.length-1))*cW;
+  const bw=Math.max(2,Math.floor(cW/candles.length)-1);
+  ctx.fillStyle='#fafafa'; ctx.fillRect(0,0,W,H);
+  [1,2,3].forEach(i=>{ ctx.strokeStyle='#e5e7eb';ctx.lineWidth=1;const y=P.t+cH/4*i;ctx.beginPath();ctx.moveTo(P.l,y);ctx.lineTo(P.l+cW,y);ctx.stroke(); });
+  const maxV=Math.max(...candles.map(c=>c[4])), vH=cH*0.2;
+  candles.forEach((c,i)=>{ ctx.fillStyle=c[3]>=c[0]?'rgba(22,163,74,.15)':'rgba(220,38,38,.15)'; ctx.fillRect(xs(i)-bw/2,P.t+cH-(c[4]/maxV)*vH,bw,(c[4]/maxV)*vH); });
+  if(pivot&&entry){const py=ys(pivot),ey=ys(entry);ctx.fillStyle='rgba(124,58,237,0.06)';ctx.fillRect(P.l,Math.min(py,ey),cW,Math.abs(py-ey)+2);}
+  if(pivot){const py=ys(pivot);if(py>P.t&&py<P.t+cH){ctx.setLineDash([4,4]);ctx.strokeStyle='#7c3aed';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(P.l,py);ctx.lineTo(P.l+cW,py);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#7c3aed';ctx.font='bold 9px Lato';ctx.fillText('BUY ZONE',P.l+cW-54,py-3);}}
+  candles.forEach((c,i)=>{ const x=xs(i),bull=c[3]>=c[0];ctx.strokeStyle=bull?'#16a34a':'#dc2626';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,ys(c[1]));ctx.lineTo(x,ys(c[2]));ctx.stroke();const bT=ys(Math.max(c[0],c[3])),bB=ys(Math.min(c[0],c[3]));ctx.fillStyle=bull?'rgba(22,163,74,.8)':'rgba(220,38,38,.8)';ctx.fillRect(x-bw/2,bT,bw,Math.max(1,bB-bT)); });
+  ctx.fillStyle='#9ca3af';ctx.font='9px Lato';ctx.fillText('50d ago',P.l,H-4);ctx.fillText('Today',P.l+cW-30,H-4);
 }
 
-/* ── SCORE COLOUR ── */
-function scoreStyle(s) {
-  if (s >= 70) return { bg:'#f0fdf4', border:'#86efac', color:'#16a34a', label:'Strong' };
-  if (s >= 50) return { bg:'#fffbeb', border:'#fcd34d', color:'#d97706', label:'Good' };
-  return { bg:'#eff6ff', border:'#bfdbfe', color:'#1d4ed8', label:'Moderate' };
-}
-
-/* ── BUILD CARD ── */
 function buildCard(s, rank) {
-  const card = document.createElement('div');
-  card.className = 'card';
+  const card=document.createElement('div'); card.className='card';
+  const sc=s.vcp_score;
+  const bbg=sc>=70?'#f0fdf4':sc>=50?'#fffbeb':'#eff6ff';
+  const bbd=sc>=70?'#86efac':sc>=50?'#fcd34d':'#bfdbfe';
+  const bco=sc>=70?'#15803d':sc>=50?'#d97706':'#1d4ed8';
+  const btx=sc>=70?'🔥 Strong':sc>=50?'✅ Good':'⚡ Moderate';
+  const rs=s.rs_vs_nifty;
+  const rsTag=rs!=null?`<span class="tag ${rs>=0?'tg':'tr'}">VS NIFTY ${rs>=0?'+':''}${parseFloat(rs).toFixed(1)}%</span>`:'';
+  const rr=parseFloat(s.risk_reward||0).toFixed(1);
+  const dist=parseFloat(s.dist_pct||0).toFixed(1);
 
-  const sc   = scoreStyle(s.vcp_score);
-  const rsStr  = s.rs_vs_nifty != null ? `${s.rs_vs_nifty >= 0 ? '+' : ''}${parseFloat(s.rs_vs_nifty).toFixed(1)}%` : 'N/A';
-  const rsCol  = (s.rs_vs_nifty > 0) ? '#15803d' : '#dc2626';
-  const rrStr  = s.risk_reward ? `${parseFloat(s.risk_reward).toFixed(1)} : 1` : '—';
-  const distStr = `${parseFloat(s.dist_pct).toFixed(1)}% below breakout`;
-
-  // Urgency = inverse of distance × last5 vol dryness × squeeze
-  const urgency = Math.min(100, Math.round(
-    ((1 - s.dist_pct/2.5) * 40) +
-    ((1 - s.last5_vol_ratio/0.40) * 35) +
-    ((1 - s.squeeze_ratio/0.50) * 25)
-  ));
-
-  // Build 12 filter cells
-  const filters = [
-    { icon:'📊', name:'Stage 2 Uptrend',      val:'✓ Confirmed',                pass: true },
-    { icon:'📍', name:'Near Pivot',            val:`${s.dist_pct.toFixed(1)}% away`,       pass: s.dist_pct <= 2.5 },
-    { icon:'🔇', name:'5-Day Vol Exhaustion',  val:`${(s.last5_vol_ratio*100).toFixed(0)}% of avg`, pass: s.last5_vol_ratio <= 0.40 },
-    { icon:'🌀', name:'Final Squeeze',         val:`${(s.squeeze_ratio*100).toFixed(0)}% of base`, pass: s.squeeze_ratio <= 0.50 },
-    { icon:'📉', name:'ATR at Base Low',       val:`${s.atr_percentile?.toFixed(0)}th pct`, pass: s.atr_percentile <= 25 },
-    { icon:'〰',  name:'Bollinger Squeeze',     val:`${s.bb_width_pct?.toFixed(1)}% width`,  pass: s.bb_width_pct <= 4.0 },
-    { icon:'📈', name:'10-EMA Rising',         val: s.ema10_rising ? '✓ Rising' : '⚠ Flat', pass: s.ema10_rising },
-    { icon:'🔺', name:'Resistance Touches',    val:`${s.resistance_touches}× tested`,       pass: s.resistance_touches >= 3 },
-    { icon:'📏', name:'Tight Base',            val:`${s.base_range_pct?.toFixed(1)}% range`, pass: s.base_range_pct <= 12 },
-    { icon:'⬆',  name:'Prior Uptrend',         val:`+${s.prior_uptrend_pct?.toFixed(0)}% before base`, pass: s.prior_uptrend_pct >= 15 },
-    { icon:'🏔',  name:'Near 52-Week High',    val:`${s.below_52w_high_pct?.toFixed(1)}% below`, pass: s.below_52w_high_pct <= 15 },
-    { icon:'⚖',  name:'Risk : Reward',         val:rrStr,                                   pass: s.risk_reward >= 2.5 },
-  ];
-
-  const filterHTML = filters.map(f => `
-    <div class="filter-cell">
-      <span class="filter-icon">${f.icon}</span>
-      <span class="filter-name">${f.name}</span>
-      <span class="filter-val ${f.pass ? 'f-pass' : 'f-warn'}">${f.val}</span>
-    </div>
-  `).join('');
-
-  card.innerHTML = `
-    <div class="card-head">
-      <div class="sym-row">
-        <div class="rank-circle">${rank}</div>
-        <div>
-          <div class="sym">${s.symbol}<span class="nse-tag">NSE</span></div>
-          <div style="font-size:.72rem;color:#6b7280;margin-top:1px;">Breakout Score</div>
-        </div>
+  card.innerHTML=`
+    <div class="card-top">
+      <div class="sym-wrap">
+        <div class="rank-dot">${rank}</div>
+        <div><div class="sym-name">${s.symbol}</div><div class="sym-sub">NSE · Score ${s.vcp_score}/100</div></div>
       </div>
-      <div class="score-box" style="background:${sc.bg};border-color:${sc.border}">
-        <div class="score-num" style="color:${sc.color}">${s.vcp_score}<span style="font-size:.85rem">/100</span></div>
-        <div class="score-lbl" style="color:${sc.color}">${sc.label} Setup</div>
-      </div>
+      <div class="badge" style="background:${bbg};border-color:${bbd};color:${bco}">${btx}</div>
     </div>
-
-    <div class="urgency-bar">
-      <span class="urgency-label">⚡ Breakout Urgency</span>
-      <div class="urgency-track"><div class="urgency-fill" style="width:${urgency}%"></div></div>
-      <span class="urgency-pct">${urgency}%</span>
+    <div class="chart-wrap">
+      <div class="chart-sub">50-day chart · Purple line = Buy Zone</div>
+      <canvas data-pivot="${s.pivot}" data-entry="${s.entry}"></canvas>
     </div>
-
-    <div class="chart-section">
-      <div class="chart-label">📊 Price chart — last 50 trading days · Purple line = buy zone</div>
-      <canvas class="chart" data-pivot="${s.pivot}" data-entry="${s.entry}"></canvas>
+    <div class="numbers">
+      <div class="num-cell"><div class="lbl">Current Price</div><div class="val c-now">₹${parseFloat(s.price).toLocaleString('en-IN',{minimumFractionDigits:2})}</div></div>
+      <div class="num-cell"><div class="lbl">Risk : Reward</div><div class="val c-pur">${rr} : 1</div></div>
+      <div class="num-cell"><div class="lbl">Gap to Breakout</div><div class="val c-buy">${dist}%</div></div>
     </div>
-
-    <div class="price-band">
-      <div>
-        <div class="price-lbl">Current Price</div>
-        <div class="price-big">₹${parseFloat(s.price).toLocaleString('en-IN',{minimumFractionDigits:2})}</div>
-      </div>
-      <div class="price-divider"></div>
-      <div>
-        <div class="price-lbl">Buy Entry (above pivot)</div>
-        <div class="pivot-num">₹${parseFloat(s.entry).toLocaleString('en-IN',{minimumFractionDigits:2})}</div>
-      </div>
-      <div class="dist-badge">⬆ ${distStr}</div>
+    <div class="actions">
+      <div class="action-cell"><div class="a-lbl">✅ Buy Entry</div><div class="a-price c-buy">₹${parseFloat(s.entry).toLocaleString('en-IN',{minimumFractionDigits:2})}</div><div class="a-note">Only on high volume</div></div>
+      <div class="action-cell"><div class="a-lbl">🛑 Stop Loss</div><div class="a-price c-stop">₹${parseFloat(s.stop_loss).toLocaleString('en-IN',{minimumFractionDigits:2})}</div><div class="a-note">Exit immediately if hit</div></div>
+      <div class="action-cell"><div class="a-lbl">🎯 Target 1</div><div class="a-price c-t1">₹${parseFloat(s.target1).toLocaleString('en-IN',{minimumFractionDigits:2})}</div><div class="a-note">Sell 50% here</div></div>
+      <div class="action-cell"><div class="a-lbl">🎯 Target 2</div><div class="a-price c-t2">₹${parseFloat(s.target2).toLocaleString('en-IN',{minimumFractionDigits:2})}</div><div class="a-note">Sell remaining 50%</div></div>
     </div>
-
-    <table class="trade-table">
-      <thead><tr><th>Action</th><th>Price</th><th>What this means</th></tr></thead>
-      <tbody>
-        <tr>
-          <td class="what">✅ Buy Entry</td>
-          <td class="how c-blue">₹${parseFloat(s.entry).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
-          <td><span class="note">Buy when price crosses ₹${s.pivot} on HIGH volume (1.5× normal)</span></td>
-        </tr>
-        <tr>
-          <td class="what">🛑 Stop Loss</td>
-          <td class="how c-red">₹${parseFloat(s.stop_loss).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
-          <td><span class="note">Exit immediately if price drops here. Protects your capital.</span></td>
-        </tr>
-        <tr>
-          <td class="what">🎯 Target 1</td>
-          <td class="how c-green">₹${parseFloat(s.target1).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
-          <td><span class="note">Sell 50% of position here. Lock in profits.</span></td>
-        </tr>
-        <tr>
-          <td class="what">🎯 Target 2</td>
-          <td class="how c-green">₹${parseFloat(s.target2).toLocaleString('en-IN',{minimumFractionDigits:2})}</td>
-          <td><span class="note">Sell remaining 50% here. Ride the full move.</span></td>
-        </tr>
-        <tr>
-          <td class="what">⚖ Risk : Reward</td>
-          <td class="how c-pur">${rrStr}</td>
-          <td><span class="note">Risk ₹${s.risk_per_share}/share to potentially earn ${parseFloat(s.risk_reward).toFixed(1)}× that</span></td>
-        </tr>
-        <tr>
-          <td class="what">📊 VS NIFTY 50</td>
-          <td class="how" style="color:${rsCol}">${rsStr}</td>
-          <td><span class="note">This stock's strength vs the overall market (last 3 months)</span></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="filters-title">12 Quality Filters — All must be ✓ Green to qualify</div>
-    <div class="filters-grid">${filterHTML}</div>
+    <div class="card-foot">
+      <span class="tag tb">📊 Stage 2 Uptrend</span>
+      <span class="tag ${s.resistance_touches>=3?'tg':'ta'}">🔺 ${s.resistance_touches}× Resistance</span>
+      <span class="tag tg">🔇 Volume Dry-up</span>
+      ${rsTag}
+    </div>
   `;
-
   return card;
 }
 
-/* ── LOAD DATA ── */
 async function loadData() {
   document.getElementById('loading').classList.remove('hidden');
-  document.getElementById('err').style.display = 'none';
-  document.getElementById('cards').innerHTML = '';
-  document.getElementById('sec-title').style.display = 'none';
-
   try {
-    const res  = await fetch(`data/results.json?t=${Date.now()}`);
-    if (!res.ok) throw new Error('fetch failed');
-    const data = await res.json();
-
-    const dt = new Date(data.generated_at);
-    document.getElementById('scan-date').textContent =
-      dt.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-    document.getElementById('scan-time').textContent =
-      dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-
-    // Market banner
-    const banner = document.getElementById('market-banner');
-    if (data.market_uptrend !== undefined) {
-      banner.style.display = 'block';
-      banner.className = 'market-banner ' + (data.market_uptrend ? 'up' : 'down');
-      banner.textContent = data.market_uptrend
-        ? '✅ NIFTY is in uptrend — Good conditions to trade breakouts today'
-        : '⚠ NIFTY is below its 20-day average — Be extra cautious. Consider skipping trades today.';
-    }
-
-    // Info strip
-    document.getElementById('info-strip').innerHTML = `
-      <div class="info-box"><div class="num">${data.total_scanned}</div><div class="lbl">Stocks Scanned</div></div>
-      <div class="info-box"><div class="num" style="color:#16a34a">${data.total_found}</div><div class="lbl">Passed Filters</div></div>
-      <div class="info-box"><div class="num" style="color:#d97706">${data.stocks.length}</div><div class="lbl">Best Shown</div></div>
-      <div class="info-box"><div class="num" style="color:#7c3aed">2.5:1</div><div class="lbl">Min Risk:Reward</div></div>
-    `;
-
-    const container = document.getElementById('cards');
-
-    if (!data.stocks || !data.stocks.length) {
-      container.innerHTML = `
-        <div class="empty-box">
-          <h2>No setups found today</h2>
-          <p>All 12 filters are strict by design.<br>
-          On most days, 0–3 stocks pass — that's normal and good.<br>
-          A day with no setup is better than a bad trade.</p>
-          <p class="good">✅ Check back tomorrow morning after 6:30 AM IST.</p>
-        </div>`;
+    const data=await (await fetch(`data/results.json?t=${Date.now()}`)).json();
+    const dt=new Date(data.generated_at);
+    document.getElementById('scan-date').textContent=dt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+    document.getElementById('scan-time').textContent=dt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    const m=document.getElementById('mkt');
+    if(data.market_uptrend!==undefined){m.style.display='block';m.className='mkt-strip '+(data.market_uptrend?'up':'down');m.textContent=data.market_uptrend?'✅ NIFTY is rising — Good day for breakouts':'⚠ NIFTY is falling — Skip all trades today';}
+    document.getElementById('stats').innerHTML=`
+      <div class="stat"><div class="n">${data.total_scanned}</div><div class="l">Scanned</div></div>
+      <div class="stat"><div class="n" style="color:#16a34a">${data.total_found}</div><div class="l">Found</div></div>
+      <div class="stat"><div class="n" style="color:#d97706">${data.stocks.length}</div><div class="l">Showing</div></div>
+      <div class="stat"><div class="n" style="color:#7c3aed">2.5:1</div><div class="l">Min R:R</div></div>`;
+    const c=document.getElementById('cards'); c.innerHTML='';
+    if(!data.stocks?.length){
+      c.innerHTML=`<div class="empty"><h2>No setups today</h2><p>Strict filters found no stocks about to break out.<br>This is normal — 0 to 3 setups per day is expected.</p><p class="ok">✅ Check back tomorrow after 6:30 AM IST</p></div>`;
     } else {
-      document.getElementById('sec-title').style.display = 'flex';
-      data.stocks.forEach((s, i) => container.appendChild(buildCard(s, i+1)));
-
-      requestAnimationFrame(() => {
-        document.querySelectorAll('.card').forEach((card, i) => {
-          const cv  = card.querySelector('canvas.chart');
-          const s   = data.stocks[i];
-          if (cv && s?.candles) drawChart(cv, s.candles, s.pivot, s.entry);
+      data.stocks.forEach((s,i)=>c.appendChild(buildCard(s,i+1)));
+      requestAnimationFrame(()=>{
+        document.querySelectorAll('.card').forEach((card,i)=>{
+          const cv=card.querySelector('canvas'), s=data.stocks[i];
+          if(cv&&s?.candles) drawChart(cv,s.candles,s.pivot,s.entry);
         });
       });
     }
   } catch(e) {
-    document.getElementById('err').style.display = 'block';
-    console.error(e);
-  } finally {
-    document.getElementById('loading').classList.add('hidden');
-  }
+    document.getElementById('cards').innerHTML=`<div class="empty"><h2>Could not load data</h2><p>Run scanner: GitHub Actions → workflow_dispatch</p></div>`;
+  } finally { document.getElementById('loading').classList.add('hidden'); }
 }
-
 loadData();
 </script>
 </body>

@@ -1,0 +1,40 @@
+name: VCP Daily Scanner
+
+on:
+  schedule:
+    # 6:30 AM IST = 1:00 AM UTC, weekdays only
+    - cron: "0 1 * * 1-5"
+  # Allows manual trigger from Actions tab
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r scanner/requirements.txt
+
+      - name: Run VCP scanner
+        run: python scanner/vcp_scanner.py
+        env:
+          PYTHONUNBUFFERED: "1"
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "vcp-bot"
+          git config user.email "vcp-bot@github-actions"
+          git add docs/data/results.json
+          git diff --staged --quiet || git commit -m "scan: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push

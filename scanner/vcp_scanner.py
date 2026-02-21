@@ -67,7 +67,7 @@ CONFIG = {
     # ── Resistance quality (NEW) ──────────────────────────────────
     "resistance_band_pct":      1.2,    # Tightened from 1.8% — stricter flat ceiling
     "resistance_touch_count":   3,      # Raised from 2 — more touches = stronger level
-    "max_resistance_touches":   8,      # Too many tests = weak level about to fail
+    "max_resistance_touches":   25,     # TATACAP had 27 — large caps test level many times
 
     # ── Volume filters ────────────────────────────────────────────
     "volume_dryup_ratio":       0.60,   # Overall base vol < 60% of 50d avg
@@ -79,7 +79,7 @@ CONFIG = {
     # ── Final squeeze (NEW) ───────────────────────────────────────
     # Last 5 candles' avg daily range must be ≤ this % of the
     # base's avg daily range. The tighter the coil, the stronger breakout.
-    "final_squeeze_ratio":      0.50,   # Last 5d range ≤ 50% of base avg range
+    "final_squeeze_ratio":      0.60,   # Relaxed from 50% — TATACAP was 53% (just over)
 
     # ── ATR percentile (NEW) ─────────────────────────────────────
     # Current ATR must be in the bottom X percentile of the base.

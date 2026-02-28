@@ -1,8 +1,15 @@
 {
-  "generated_at": "2026-02-27T03:26:07.763989+00:00",
-  "market_date": "2026-02-27",
-  "total_scanned": 149,
-  "total_found": 0,
+  "generated_at": "2026-02-28T12:38:30.699662+00:00",
+  "scanner_version": "v4",
+  "total_scanned": 210,
   "market_uptrend": true,
-  "stocks": []
+  "market_strength": "unknown",
+  "pre_breakout": {
+    "total_found": 0,
+    "stocks": []
+  },
+  "broken_out": {
+    "total_found": 0,
+    "stocks": []
+  }
 }
